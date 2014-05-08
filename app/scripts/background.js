@@ -98,7 +98,7 @@ chrome.storage.local.get(null, function(results) {
         },
       "services": 
       {
-        "service.user.salesforce.se": 
+        "service.user.salesforce.setup": 
         {
           "ngServiceName": "salesforceSvc",
           "refreshFrequency": 2
