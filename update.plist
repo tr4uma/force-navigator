@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+   <key>Extension Updates</key>
+   <array>
+     <dict>
+       <key>CFBundleIdentifier</key>
+       <string>com.silverline.forceNavigator</string>
+       <key>Developer Identifier</key>
+       <string>UH66Q8ZAYG</string>
+       <key>CFBundleVersion</key>
+       <string>6.0</string>
+       <key>CFBundleShortVersionString</key>
+       <string>0.5.27</string>
+       <key>URL</key>
+       <string>http://dnakov.github.io/force-navigator/force-navigator.safariextz</string>
+     </dict>
+   </array>
+</dict>
+</plist>
