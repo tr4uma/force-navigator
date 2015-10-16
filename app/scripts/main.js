@@ -117,7 +117,7 @@ var sfnav = (function() {
         loginAsPerform(mouseClickLoginAsUserId);
         return true;
     }
-	
+
     function getSingleObjectMetadata()
     {
         var recordId = document.URL.split('/')[3];
@@ -125,7 +125,7 @@ var sfnav = (function() {
 
     }
     function addElements(ins)
-    {      
+    {
 		if(ins.substring(0,9) == 'login as ')
         {
 
@@ -323,11 +323,11 @@ var sfnav = (function() {
         } else {
             sp = d;
         }
-		
+
 		if(cmds[word] != null && cmds[word].id != null && cmds[word].id != "") {
 			sp.id = cmds[word].id;
 		}
-		
+
         sp.className=  "sfnav_child";
         sp.appendChild(document.createTextNode(word));
         sp.onmouseover = mouseHandler;
@@ -452,7 +452,7 @@ var sfnav = (function() {
             } else {
                 window.location.href = cmds[cmd].url;
             }
-
+            close();
             return true;
         }
         if(cmd.toLowerCase() == 'refresh metadata')
@@ -479,7 +479,7 @@ var sfnav = (function() {
             loginAs(cmd);
             return true;
         }
-		
+
         return false;
     }
 
@@ -680,16 +680,16 @@ var sfnav = (function() {
         }
 
     }
-	
+
 	function loginAs(cmd) {
 		var arrSplit = cmd.split(' ');
 		var searchValue = arrSplit[2];
 		if(arrSplit[3] !== undefined)
 			searchValue += '+' + arrSplit[3];
-		
+
 		var query = 'SELECT+Id,+Name,+Username+FROM+User+WHERE+Name+LIKE+\'%25' + searchValue + '%25\'+OR+Username+LIKE+\'%25' + searchValue + '%25\'';
 		console.log(query);
-		
+
 		ftClient.query(query,
 			function(success) {
 				console.log(success);
@@ -710,7 +710,7 @@ var sfnav = (function() {
 			}
 		);
 	}
-	
+
 	function loginAsShowOptions(records){
 		for(var i = 0; i < records.length; ++i){
 			var cmd = 'Login As ' + records[i].Name;
@@ -719,7 +719,7 @@ var sfnav = (function() {
 		}
 		setVisible('visible');
 	}
-	
+
 	function loginAsPerform(userId) {
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
@@ -728,13 +728,13 @@ var sfnav = (function() {
 			   document.close();
 			   setTimeout(function() {
 					document.getElementsByName("login")[0].click();
-			   }, 1000);  
+			   }, 1000);
 			}
 		}
 		xmlhttp.open("GET", userDetailPage(userId), true);
 		xmlhttp.send();
 	}
-	
+
 	function userDetailPage(userId) {
 		var loginLocation = window.location.protocol + '//' + window.location.host + '/' + userId + '?noredirect=1';
 		console.log(loginLocation);
@@ -749,7 +749,7 @@ var sfnav = (function() {
         var act = {};
         metaData = {};
 
-
+        var isLightning = location.origin.indexOf('lightning') != -1;
         for(var i=0;i<metadata.sobjects.length;i++)
         {
             if(metadata.sobjects[i].keyPrefix != null)
@@ -765,6 +765,7 @@ var sfnav = (function() {
                 act.key = metadata.sobjects[i].name;
                 act.keyPrefix = metadata.sobjects[i].keyPrefix;
                 act.url = serverInstance + '/' + metadata.sobjects[i].keyPrefix;
+                if(isLightning) act.url = location.origin + location.pathname + '#/sObject/' + metadata.sobjects[i].keyPrefix + '/home';
 
                 cmds['List ' + mRecord.labelPlural] = act;
                 act = {};
@@ -772,6 +773,8 @@ var sfnav = (function() {
                 act.keyPrefix = metadata.sobjects[i].keyPrefix;
                 act.url = serverInstance + '/' + metadata.sobjects[i].keyPrefix;
                 act.url += '/e';
+                if(isLightning) act.url = location.origin + location.pathname + '#/sObject/' + metadata.sobjects[i].keyPrefix + '/new';
+
                 cmds['New ' + mRecord.label] = act;
 
 
@@ -935,8 +938,11 @@ var sfnav = (function() {
 
         if(url.indexOf("visual.force") != -1)
         {
-            returnUrl = 'https://' + urlParseArray[1] + '';
+            returnUrl = 'https://' + urlParseArray[1] + '.salesforce.com';
             return returnUrl;
+        }
+        if(url.indexOf("lightning.force.com") != -1) {
+            returnUrl = urlParseArray[0] + '.salesforce.com';
         }
         return returnUrl;
     }
@@ -986,6 +992,15 @@ var sfnav = (function() {
             invokeCommand(origText, newtab);
     }
 
+    function close() {
+        document.getElementById("sfnav_quickSearch").blur();
+        clearOutput();
+        document.getElementById("sfnav_quickSearch").value = '';
+
+        setVisible("hidden");
+        setVisibleSearch("hidden");
+    }
+
     function bindShortcut(shortcut)
     {
 
@@ -994,16 +1009,7 @@ var sfnav = (function() {
             return false;
         });
 
-        Mousetrap.wrap(document.getElementById('sfnav_quickSearch')).bind('esc', function(e) {
-
-            document.getElementById("sfnav_quickSearch").blur();
-            clearOutput();
-            document.getElementById("sfnav_quickSearch").value = '';
-
-            setVisible("hidden");
-            setVisibleSearch("hidden");
-
-        });
+        Mousetrap.wrap(document.getElementById('sfnav_quickSearch')).bind('esc', close);
 
         Mousetrap.wrap(document.getElementById('sfnav_quickSearch')).bind('enter', kbdCommand);
 

@@ -394,9 +394,14 @@ if (forceTooling.Client === undefined) {
     return this.ajax('/' + this.apiVersion + '/tooling/sobjects/' + metaDataType + '/' + id + '?_HttpMethod=PATCH', callback, error, "POST", JSON.stringify(payload));
   };
 
-  // query
+  // tooling query
   forceTooling.Client.prototype.query = function(queryString, callback, error) {
     return this.ajax('/' + this.apiVersion + '/tooling/query/?q=' + queryString, callback, error);
+  };
+
+  // query
+  forceTooling.Client.prototype.soqlQuery = function(queryString, callback, error) {
+    return this.ajax('/' + this.apiVersion + '/query/?q=' + queryString, callback, error);
   };
 
   // queryFieldsByName

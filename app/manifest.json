@@ -32,9 +32,10 @@
             ],
             "js": [
                 "scripts/jquery.js",
+                "scripts/awesomeplete.min.js",
                 "scripts/mousetrap.min.js",
                 "scripts/forceTooling.js",
-                "scripts/main.js",
+                "scripts/main-new.js",
                 "scripts/popup.js"
             ],
             "run_at": "document_end"
@@ -44,6 +45,7 @@
         "https://*.force.com/*",
         "https://*.salesforce.com/*",
         "https://*.cloudforce.com/*",
-        "storage"
+        "storage",
+        "identity"
     ]
 }

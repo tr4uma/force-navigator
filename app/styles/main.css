@@ -33,7 +33,11 @@
     max-height:240px;
  	overflow:auto;
  }
+ #sfnav_quickSearch {
+    position: relative;
+ }
  .sfnav_shadow {
+    position:relative;
  	max-height:100%;
  	overflow:auto;
  	/*padding-top: 15px;*/
